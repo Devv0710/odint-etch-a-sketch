@@ -1,30 +1,47 @@
-const body = document.querySelector("body")
 const container = document.querySelector(".container")
-// const breakDiv = document.createElement("div")
-// breakDiv.classList.add("break")
+const button = document.querySelector("button")
+button.addEventListener("click", changeGridSize)
+const NUMBEROFSQURES = 16
 
-let grids = 16
+function changeGridSize() {
+    let size
+    do {
+        size = Number(prompt("How many grids do you want? less than 100"))
+    } while (size > 100);
+    const rows = document.querySelectorAll(".row")
+    rows.forEach(row => {
+        container.removeChild(row)
+    });
+    createGrid(size)
+}
 
+function paintSquare(target, color = "black") {
+    target.style.backgroundColor = color
+}
 
-for (let i = 0; i < grids; i++) {
-    const row = document.createElement("div")
-    row.classList.add("row")
-    for (let j = 0; j < grids; j++) {
-        const rowItem = document.createElement("div")
-        rowItem.classList.add("grid")
-        row.appendChild(rowItem)
+function randomColor() {
+    return `rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`
+}
+
+function createGrid(numberOfSquares) {
+    const size = 944 / numberOfSquares
+
+    for (let i = 0; i < numberOfSquares; i++) {
+        const row = document.createElement("div")
+        row.classList.add("row")
+        row.addEventListener("mouseover", (e) => paintSquare(e.target, randomColor()))
+
+        for (let j = 0; j < numberOfSquares; j++) {
+            const rowItem = document.createElement("div")
+            rowItem.classList.add("square")
+            rowItem.style.width = `${size}px`
+            rowItem.style.height = `${size}px`
+            row.appendChild(rowItem)
+        }
+
+        container.appendChild(row)
     }
-    container.appendChild(row)
 }
 
 
-// for (let i = 0; i < grids; i++) {
-//     for (let j = 0; j < grids; j++) {
-//         const grid = document.createElement("div")
-//         grid.classList.add("grid")
-//         container.appendChild(grid)
-//     }
-//     container.appendChild(breakDiv)
-// }
-
-// body.appendChild(container)
+createGrid(NUMBEROFSQURES)
